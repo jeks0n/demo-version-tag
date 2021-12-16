@@ -12,7 +12,7 @@ env:
 
 jobs:
   test:
-    name: Run Test
+    name: Run CI
     runs-on: ubuntu-latest
     steps:
 
