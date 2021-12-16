@@ -1,6 +1,6 @@
-# demo-version-tag
+# Versioning Docker Image
 
-Goal: Set Docker Image version from git tag.
+Goal: Create Docker Image with a version from git tag.
 
 ## Add tag in local environment
 Command line:
