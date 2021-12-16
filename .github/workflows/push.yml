@@ -1,0 +1,62 @@
+name: CI to Docker Hub
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: jeks0n/test-version
+
+jobs:
+  test:
+    name: Run Test
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ${{ env.IMAGE_NAME }}
+          tags: |
+            type=match,pattern=\d.\d.\d
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build App
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:cached
+          cache-to: type=inline
+          push: false
+          tags: ${{ env.IMAGE_NAME }}
+
+      - name: Test
+        run: |
+          echo "Do some tests"
+
+      - name: Push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          cache-from: type=registry,ref=${{ env.IMAGE_NAME }}:cached
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
