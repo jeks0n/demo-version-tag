@@ -3,13 +3,17 @@
 Goal: Set Docker Image version from git tag.
 
 ## Add tag in local environment
-Source code example.
+Command line:
 ```
 git tag -a v1.0.0 -m "my version 1.0.0"
 ```
-With make:
-
-
-`git tag -a v1.0.0 -m "my version 1.0.0"`
-
-`git push origin v1.5`
+## Push tag and deploy with actions
+Command line:
+```
+git tag -a v1.0.0 -m "my version 1.0.0"
+```
+## Add, push and deploy tag with actions with Makefile
+Command line:
+```
+make push-tag TAG=v1.0.1 DESCRIPTION="Useful update"
+```
