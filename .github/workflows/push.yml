@@ -4,8 +4,8 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - main
+#    branches:
+#      - main
 
 env:
   IMAGE_NAME: jeks0n/test-version
